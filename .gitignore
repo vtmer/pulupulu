@@ -5,7 +5,8 @@ bin-release/
 
 # Other files and folders
 .settings/
+dist/
 
-# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
+# Project files, i.e. `.as3proj`.
 # should NOT be excluded as they contain compiler settings and other important
-# information for Eclipse / Flash Builder.
+# information for Flash Develop.
