@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:a8647dd7b60a0e72e74ab8e5bb51c3d5$ -->
+<TextureAtlas imagePath="mySprite.png">
+    <SubTexture name="bird" x="2" y="350" width="209" height="128" frameX="-2" frameY="-3" frameWidth="211" frameHeight="134"/>
+    <SubTexture name="chilli" x="921" y="228" width="76" height="73" frameX="-1" frameY="-1" frameWidth="78" frameHeight="79"/>
+    <SubTexture name="paper1" x="307" y="467" width="117" height="104" frameX="-4" frameY="-3" frameWidth="121" frameHeight="110"/>
+    <SubTexture name="paper2" x="921" y="367" width="68" height="110" frameX="0" frameY="0" frameWidth="68" frameHeight="114"/>
+    <SubTexture name="pu" x="2" y="839" width="140" height="156" frameX="-1" frameY="0" frameWidth="144" frameHeight="160"/>
+    <SubTexture name="puman" x="598" y="228" width="321" height="302" frameX="-1" frameY="-2" frameWidth="323" frameHeight="304"/>
+    <SubTexture name="puman2" x="2" y="535" width="212" height="302" frameX="-2" frameY="-2" frameWidth="214" frameHeight="304"/>
+    <SubTexture name="radish" x="144" y="839" width="161" height="136" frameX="0" frameY="-1" frameWidth="161" frameHeight="140"/>
+    <SubTexture name="rankBtn" x="216" y="350" width="316" height="115"/>
+    <SubTexture name="rankBtn2" x="307" y="245" width="270" height="103" frameX="-23" frameY="-8" frameWidth="316" frameHeight="115"/>
+    <SubTexture name="startBtn" x="598" y="2" width="418" height="114"/>
+    <SubTexture name="startBtn2" x="598" y="118" width="378" height="108" frameX="-20" frameY="-5" frameWidth="418" frameHeight="114"/>
+    <SubTexture name="sweetPatato1" x="921" y="303" width="76" height="62" frameX="-1" frameY="-4" frameWidth="78" frameHeight="68"/>
+    <SubTexture name="sweetPatato2" x="921" y="479" width="51" height="54" frameX="-3" frameY="-3" frameWidth="59" frameHeight="60"/>
+    <SubTexture name="title" x="2" y="2" width="594" height="241"/>
+</TextureAtlas>
