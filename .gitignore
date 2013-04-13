@@ -6,6 +6,13 @@ bin-release/
 # Other files and folders
 .settings/
 dist/
+obj/
+bat/
+cert/
+Run.bat
+PackageApp.bat
+AIR_IOS_readme.txt
+AIR_Android_readme.txt
 
 # Project files, i.e. `.as3proj`.
 # should NOT be excluded as they contain compiler settings and other important
