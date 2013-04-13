@@ -12,7 +12,7 @@ package events
 		//参数
 		public var params:Object;
 		
-		public function NavigationEvent(type:String, _params:Object; bubbles:Boolean = false) 
+		public function NavigationEvent(type:String, _params:Object,bubbles:Boolean = false) 
 		{
 			super(type, bubbles);
 			params = _params;

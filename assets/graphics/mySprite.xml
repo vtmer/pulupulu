@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:a8647dd7b60a0e72e74ab8e5bb51c3d5$ -->
+<!-- $TexturePacker:SmartUpdate:c886f313636e9a7554a19c889cbd5186$ -->
 <TextureAtlas imagePath="mySprite.png">
-    <SubTexture name="bird" x="2" y="350" width="209" height="128" frameX="-2" frameY="-3" frameWidth="211" frameHeight="134"/>
-    <SubTexture name="chilli" x="921" y="228" width="76" height="73" frameX="-1" frameY="-1" frameWidth="78" frameHeight="79"/>
-    <SubTexture name="paper1" x="307" y="467" width="117" height="104" frameX="-4" frameY="-3" frameWidth="121" frameHeight="110"/>
-    <SubTexture name="paper2" x="921" y="367" width="68" height="110" frameX="0" frameY="0" frameWidth="68" frameHeight="114"/>
-    <SubTexture name="pu" x="2" y="839" width="140" height="156" frameX="-1" frameY="0" frameWidth="144" frameHeight="160"/>
-    <SubTexture name="puman" x="598" y="228" width="321" height="302" frameX="-1" frameY="-2" frameWidth="323" frameHeight="304"/>
-    <SubTexture name="puman2" x="2" y="535" width="212" height="302" frameX="-2" frameY="-2" frameWidth="214" frameHeight="304"/>
-    <SubTexture name="radish" x="144" y="839" width="161" height="136" frameX="0" frameY="-1" frameWidth="161" frameHeight="140"/>
-    <SubTexture name="rankBtn" x="216" y="350" width="316" height="115"/>
-    <SubTexture name="rankBtn2" x="307" y="245" width="270" height="103" frameX="-23" frameY="-8" frameWidth="316" frameHeight="115"/>
-    <SubTexture name="startBtn" x="598" y="2" width="418" height="114"/>
-    <SubTexture name="startBtn2" x="598" y="118" width="378" height="108" frameX="-20" frameY="-5" frameWidth="418" frameHeight="114"/>
-    <SubTexture name="sweetPatato1" x="921" y="303" width="76" height="62" frameX="-1" frameY="-4" frameWidth="78" frameHeight="68"/>
-    <SubTexture name="sweetPatato2" x="921" y="479" width="51" height="54" frameX="-3" frameY="-3" frameWidth="59" frameHeight="60"/>
-    <SubTexture name="title" x="2" y="2" width="594" height="241"/>
+    <SubTexture name="aboutBtn" x="2" y="682" width="372" height="127"/>
+    <SubTexture name="bird" x="533" y="96" width="88" height="54"/>
+    <SubTexture name="chilli" x="940" y="120" width="48" height="46"/>
+    <SubTexture name="continueBtn" x="2" y="553" width="372" height="127"/>
+    <SubTexture name="continueBtn2" x="525" y="374" width="475" height="162"/>
+    <SubTexture name="exitBtn" x="2" y="260" width="475" height="162"/>
+    <SubTexture name="gameBar" x="2" y="2" width="720" height="56"/>
+    <SubTexture name="paper1" x="479" y="302" width="46" height="41"/>
+    <SubTexture name="paper2" x="479" y="345" width="44" height="73"/>
+    <SubTexture name="pauseBtn" x="533" y="60" width="104" height="34"/>
+    <SubTexture name="pu" x="376" y="459" width="140" height="156" frameX="-1" frameY="0" frameWidth="144" frameHeight="160"/>
+    <SubTexture name="puEnergy" x="376" y="617" width="113" height="369"/>
+    <SubTexture name="puman1" x="724" y="2" width="214" height="202"/>
+    <SubTexture name="puman2" x="940" y="2" width="82" height="116"/>
+    <SubTexture name="radish" x="479" y="260" width="48" height="40"/>
+    <SubTexture name="rankBtn" x="2" y="424" width="372" height="127"/>
+    <SubTexture name="restartBtn" x="533" y="210" width="475" height="162"/>
+    <SubTexture name="startBtn" x="2" y="811" width="370" height="126"/>
+    <SubTexture name="sweetPatato1" x="940" y="168" width="48" height="40"/>
+    <SubTexture name="sweetPatato2" x="479" y="420" width="37" height="37"/>
+    <SubTexture name="title" x="2" y="60" width="529" height="198"/>
 </TextureAtlas>

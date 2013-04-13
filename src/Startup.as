@@ -23,11 +23,12 @@ package
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			
+			//自适应屏幕分辨率
 			var screenWidth:int = stage.fullScreenWidth;
 			var screenHeight:int = stage.fullScreenHeight;
 			var viewPort:Rectangle = new Rectangle(0, 0, screenWidth, screenHeight)
 			
-			_st = new Starling(Welcome, stage, viewPort);
+			_st = new Starling(Game, stage, viewPort);
 			_st.stage.stageWidth = 720;
 			_st.stage.stageHeight = 1280;
 			
