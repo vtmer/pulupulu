@@ -9,6 +9,7 @@ dist/
 obj/
 bat/
 cert/
+icons/
 Run.bat
 PackageApp.bat
 AIR_IOS_readme.txt
