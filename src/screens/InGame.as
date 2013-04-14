@@ -40,6 +40,7 @@ package screens
 		private const middleScreen = 640;
 		private var tips:TextField;
 		private var pausevV:Number;
+		private var pausexS:Number;
 		
 		public function InGame()
 		{
@@ -127,6 +128,8 @@ package screens
 		private function onPauseButtonClick(e:Event):void
 		{
 			pausevV = vVelocity;
+			pausexS = xSpeed;
+			xSpeed = 0;
 			vVelocity = 0;
 			vAcceleration = 0;
 			stage.removeEventListener(TouchEvent.TOUCH, onTouch);
@@ -171,6 +174,7 @@ package screens
 		{
 			vVelocity = pausevV;
 			vAcceleration = 0.5;
+			xSpeed = pausexS; 
 			stage.addEventListener(TouchEvent.TOUCH, onTouch);
 			myAcc.addEventListener(AccelerometerEvent.UPDATE, onAccUpdate);
 			
@@ -265,6 +269,7 @@ package screens
 			
 			//闲置			
 			puman.y = 1150;
+			puman.x = 360;
 			gameState = "idle";
 			vAcceleration = 0.5;
 			
