@@ -1,5 +1,6 @@
 pulupulu
 ========
+![Alt text](http://i.imgur.com/uDtSi3a.png "Pulupulu Icon")
 ***
 >######Pulupulu is the mobile game first made by [VTMER][1].
 >######Pulupulu是[维生数工作室][1]第一次制作的一个手机游戏
