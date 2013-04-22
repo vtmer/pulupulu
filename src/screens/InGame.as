@@ -4,6 +4,7 @@ package screens
 	import flash.events.AccelerometerEvent;
 	import flash.geom.Rectangle;
 	import flash.sensors.Accelerometer;
+	import gameElements.Pu;
 	import gameElements.PuEnergy;
 	import gameElements.Puman;
 	import starling.display.Button;
@@ -41,6 +42,7 @@ package screens
 		private var tips:TextField;
 		private var pausevV:Number;
 		private var pausexS:Number;
+		private var pu:Pu;
 		
 		public function InGame()
 		{
@@ -218,10 +220,10 @@ package screens
 					
 					vVelocity += vAcceleration;
 					
-					//if (puman.x = 0)
-					//puman.x = 720;
-					//if (puman.x = 720)
-					//puman.x = 0;
+					if (puman.x < 0)
+					puman.x = 720;
+					if (puman.x > 720)
+					puman.x = 0;
 					
 					if ((puman.y > middleScreen * 0.25) && (vVelocity < 0))
 					{
@@ -311,6 +313,10 @@ package screens
 		private function onTouch(e:TouchEvent):void
 		{
 			vVelocity = -20;
+			pu = new Pu();
+			pu.x = puman.x;
+			pu.y = puman.y + puman.height;
+			this.addChild(pu);
 		}
 	
 	}
