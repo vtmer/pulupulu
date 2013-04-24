@@ -4,6 +4,7 @@ package screens
 	import flash.events.AccelerometerEvent;
 	import flash.geom.Rectangle;
 	import flash.sensors.Accelerometer;
+	import gameElements.GameProps;
 	import gameElements.Pu;
 	import gameElements.PuEnergy;
 	import gameElements.Puman;
@@ -12,7 +13,9 @@ package screens
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.events.Touch;
 	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.text.TextField;
 	
 	/**
@@ -43,6 +46,9 @@ package screens
 		private var pausevV:Number;
 		private var pausexS:Number;
 		private var pu:Pu;
+		private var gameProps:GameProps;
+		private var propsVect:Vector.<Sprite>=new Vector.<Sprite>(10,true);
+		private var props:Sprite;
 		
 		public function InGame()
 		{
@@ -84,6 +90,7 @@ package screens
 			pauseButton = new Button(Assets.getAtlas().getTexture("pauseBtn"));
 			pauseButton.x = 561;
 			pauseButton.y = 12;
+			
 			pauseButton.addEventListener(Event.TRIGGERED, onPauseButtonClick);
 			this.addChild(pauseButton);
 			//暂停页面
@@ -176,7 +183,7 @@ package screens
 		{
 			vVelocity = pausevV;
 			vAcceleration = 0.5;
-			xSpeed = pausexS; 
+			xSpeed = pausexS;
 			stage.addEventListener(TouchEvent.TOUCH, onTouch);
 			myAcc.addEventListener(AccelerometerEvent.UPDATE, onAccUpdate);
 			
@@ -221,10 +228,17 @@ package screens
 					vVelocity += vAcceleration;
 					
 					if (puman.x < 0)
-					puman.x = 720;
+						puman.x = 720;
 					if (puman.x > 720)
-					puman.x = 0;
-					
+						puman.x = 0;
+								
+					//碰撞道具
+					for (var i:int = 0; i < 10; i++)
+					{
+						props = propsVect[i];
+						//if (puman.hitTestObject(props)
+					}	
+								
 					if ((puman.y > middleScreen * 0.25) && (vVelocity < 0))
 					{
 						//屁孩上升
@@ -239,17 +253,29 @@ package screens
 						}
 						else
 						{
-							// 当屁孩在中间的时候，游戏背景倒退
+							// 游戏背景倒退
 							
-							//for (var j:int = 0; j < 5; j++)
-							//{
-							//tmpMc = myVect[j];
-							//tmpMc.y -= vVelocity;
-							//}
+							for (var j:int = 0; j < 10; j++)
+							{
+							props = propsVect[j];
+							props.y -= vVelocity;
+							}
 							
 							//分数增加
 							liveScore += 5;
 								//theScore.text = liveScore.toString();
+						}
+					}
+					
+					if (propsVect[0] != null)
+					{
+						for (var k:int = 0; k < 10; k++)
+						{
+							props = propsVect[k];
+							if (props.y > 1280) {
+							props.y = -5;
+							props.x = Math.random() * stage.stageWidth;
+							}
 						}
 					}
 					
@@ -274,6 +300,19 @@ package screens
 			puman.x = 360;
 			gameState = "idle";
 			vAcceleration = 0.5;
+			
+			liveScore = 0;
+			accX = 0;
+			
+			for (var i:int = 0; i < 10; i++)
+			{
+				gameProps = new GameProps();
+				gameProps.x = Math.random() * stage.stageWidth;
+				gameProps.y = 100 + (i * stage.stageHeight / 6-100);
+				
+				propsVect[i] = gameProps;
+				addChild(gameProps);
+			}
 			
 			myAcc.addEventListener(AccelerometerEvent.UPDATE, onAccUpdate);
 			stage.addEventListener(TouchEvent.TOUCH, onTouch);
@@ -312,11 +351,15 @@ package screens
 		//触摸控制
 		private function onTouch(e:TouchEvent):void
 		{
-			vVelocity = -20;
-			pu = new Pu();
-			pu.x = puman.x;
-			pu.y = puman.y + puman.height;
-			this.addChild(pu);
+			var touch:Touch = e.getTouch(stage);
+			if (touch.phase == "ended")
+			{
+				vVelocity = -20;
+				pu = new Pu();
+				pu.x = puman.x;
+				pu.y = puman.y + puman.height;
+				this.addChild(pu);
+			}
 		}
 	
 	}
