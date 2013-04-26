@@ -33,7 +33,6 @@ package
 			_st.stage.stageHeight = 1280;
 			
 			
-			_st.showStats = true;
 			_st.simulateMultitouch = false;
 			_st.antiAliasing = 1;
 			

@@ -2,13 +2,16 @@ package screens
 {
 	import events.NavigationEvent;
 	import flash.events.AccelerometerEvent;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.sensors.Accelerometer;
 	import gameElements.GameProps;
 	import gameElements.Pu;
 	import gameElements.PuEnergy;
 	import gameElements.Puman;
+	import starling.display.BlendMode;
 	import starling.display.Button;
+	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
@@ -41,14 +44,32 @@ package screens
 		private var vVelocity:Number;
 		private var liveScore:Number;
 		private var myAcc = new Accelerometer();
-		private const middleScreen = 640;
+		private const middleScreen:Number = 640;
 		private var tips:TextField;
 		private var pausevV:Number;
 		private var pausexS:Number;
 		private var pu:Pu;
 		private var gameProps:GameProps;
-		private var propsVect:Vector.<Sprite>=new Vector.<Sprite>(10,true);
+		private var propsVect:Vector.<Sprite> = new Vector.<Sprite>(propsNum, true);
 		private var props:Sprite;
+		private var phase:String;
+		private var propsNum:int = 15;
+		private var score:TextField;
+		private var upEnergy:int = 30;
+		private var hitprops:DisplayObject;
+		private var object1:DisplayObject;
+		private var object2:DisplayObject;
+		private var pt1:Point;
+		private var hitN:Number = 0;
+		private var radius1:Number;
+		private var radius2:Number;
+		private var p1:Point;
+		private var p2:Point;
+		private var distance:Number;
+		private var _object2:DisplayObject;
+		private var _object1:DisplayObject;
+		private var touchnum:Number=0;
+		private var runnum:Number=0;
 		
 		public function InGame()
 		{
@@ -66,13 +87,20 @@ package screens
 		{
 			bg = new Image(Assets.getTexture("BgWelcome"));
 			this.addChild(bg);
+			bg.blendMode = BlendMode.NONE;
 			
 			gameBar = new Image(Assets.getAtlas().getTexture("gameBar"));
 			this.addChild(gameBar);
 			
+			score = new TextField(200, 50, "0", "Verdana", 40);
+			score.x = 0;
+			score.y = 0;
+			this.addChild(score);
+			
 			puman = new Puman();
 			puman.x = 350;
 			puman.y = 1150;
+			puman.name = "puman";
 			this.addChild(puman);
 			trace("Puman");
 			
@@ -204,7 +232,7 @@ package screens
 		
 		private function onGameState(e:Event):void
 		{
-			
+			score.text = String(liveScore);
 			//游戏状态
 			switch (gameState)
 			{
@@ -215,7 +243,7 @@ package screens
 					if (puman.y > 1000)
 					{
 						//初始化puman
-						vVelocity = -20;
+						vVelocity = -upEnergy;
 					}
 					else
 					{
@@ -231,15 +259,30 @@ package screens
 						puman.x = 720;
 					if (puman.x > 720)
 						puman.x = 0;
-								
+					
 					//碰撞道具
-					for (var i:int = 0; i < 10; i++)
+					for (var i:int = 0; i < propsNum; i++)
 					{
 						props = propsVect[i];
-						//if (puman.hitTestObject(props)
-					}	
-								
-					if ((puman.y > middleScreen * 0.25) && (vVelocity < 0))
+						if (HitTest(props, puman))
+						{
+							trace("hit");
+							props.visible = false;
+							
+						}
+						
+							//
+							//hitprops = props.hitTest(pt1, true);
+							//if (hitprops != null){
+							//trace(hitprops.name);
+							//hitN++;
+							//trace(hitN)
+							//trace(puman.name);
+							//}
+						
+					}
+					
+					if ((puman.y > middleScreen) && (vVelocity < 0))
 					{
 						//屁孩上升
 						puman.y += vVelocity;
@@ -255,26 +298,28 @@ package screens
 						{
 							// 游戏背景倒退
 							
-							for (var j:int = 0; j < 10; j++)
+							for (var j:int = 0; j < propsNum; j++)
 							{
-							props = propsVect[j];
-							props.y -= vVelocity;
+								props = propsVect[j];
+								props.y -= vVelocity;
 							}
 							
 							//分数增加
-							liveScore += 5;
+							liveScore += 10;
 								//theScore.text = liveScore.toString();
 						}
 					}
 					
 					if (propsVect[0] != null)
 					{
-						for (var k:int = 0; k < 10; k++)
+						for (var k:int = 0; k < propsNum; k++)
 						{
 							props = propsVect[k];
-							if (props.y > 1280) {
-							props.y = -5;
-							props.x = Math.random() * stage.stageWidth;
+							if (props.y > 1280)
+							{
+								props.y = -5;
+								props.x = Math.random() * stage.stageWidth;
+								props.visible = true;
 							}
 						}
 					}
@@ -284,6 +329,25 @@ package screens
 					break;
 			}
 		
+		}
+		
+		//碰撞方法
+		private function HitTest(object1:DisplayObject, object2:DisplayObject, value:* = null):Boolean
+		{
+			
+			radius1 = object1.width / 2;
+			radius2 = object2.width / 2;
+			
+			p1 = new Point(object1.x, object1.y);
+			p2 = new Point(object2.x, object2.y);
+		
+			distance = Point.distance(p1, p2);
+			if (distance < (radius1 + radius2))
+			{
+				return true;
+			}
+			else
+				return false;
 		}
 		
 		public function initialize():void
@@ -304,11 +368,11 @@ package screens
 			liveScore = 0;
 			accX = 0;
 			
-			for (var i:int = 0; i < 10; i++)
+			for (var i:int = 0; i < propsNum; i++)
 			{
 				gameProps = new GameProps();
 				gameProps.x = Math.random() * stage.stageWidth;
-				gameProps.y = 100 + (i * stage.stageHeight / 6-100);
+				gameProps.y = 100 + (i * stage.stageHeight / (propsNum + 1) - 100);
 				
 				propsVect[i] = gameProps;
 				addChild(gameProps);
@@ -331,20 +395,20 @@ package screens
 			accX = -evt.accelerationX;
 			if (accX > 0)
 			{
-				xSpeed += accX * 10 + 1;
+				xSpeed += accX * 10 + 2;
 			}
 			else
 			{
-				xSpeed += accX * 10 - 1;
+				xSpeed += accX * 10 - 2;
 			}
 			
-			if (xSpeed > 5)
+			if (xSpeed > 10)
 			{
-				xSpeed = 5;
+				xSpeed = 10;
 			}
-			if (xSpeed < -5)
+			if (xSpeed < -10)
 			{
-				xSpeed = -5;
+				xSpeed = -10;
 			}
 		}
 		
@@ -352,14 +416,29 @@ package screens
 		private function onTouch(e:TouchEvent):void
 		{
 			var touch:Touch = e.getTouch(stage);
-			if (touch.phase == "ended")
+			phase = touch.phase;
+			if (phase == "ended")
 			{
-				vVelocity = -20;
+				vVelocity = -upEnergy;
 				pu = new Pu();
 				pu.x = puman.x;
 				pu.y = puman.y + puman.height;
 				this.addChild(pu);
+				touchnum += 1;
+				puEnergy.addEventListener(Event.ENTER_FRAME, power);
 			}
+		}
+		
+		private function power(e:Event):void
+		{
+			if (runnum < 0.2 * touchnum)
+			{
+				runnum += 0.01;
+				puEnergy.setratio(runnum);
+			}
+			else
+				puEnergy.removeEventListener(Event.ENTER_FRAME, power);
+		
 		}
 	
 	}

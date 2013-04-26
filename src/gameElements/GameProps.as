@@ -10,11 +10,12 @@ package gameElements
 	 */
 	public class GameProps extends Sprite 
 	{
-		private var num:int=2;
+		private var num:int=3;
 		public var propsName:String;
 		private var sweetPatato1:Image;
 		private var ranN:int=0;
 		private var sweetPatato2:Image;
+		private var radish:Image;
 		
 		public function GameProps() 
 		{
@@ -26,22 +27,26 @@ package gameElements
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAddToStage);
 			createProps();
+			
 		}
 		
 		private function createProps():void 
 		{
-		    ranN = Math.random() * (num - 1);
+		    ranN = Math.random()*num;
 			trace(ranN);
-			if (ranN= 0) {
+			if (ranN== 0) {
 				sweetPatato1 = new Image(Assets.getAtlas().getTexture("sweetPatato1"));
 				this.addChild(sweetPatato1);
 				propsName = "sweetPatato1";
-			}
-			
-			if ( ranN= 1) {
+			}else if(ranN==1){
 				sweetPatato2 = new Image(Assets.getAtlas().getTexture("sweetPatato2"));
 				this.addChild(sweetPatato2);
 				propsName = "sweetPatato2";
+			}else {
+				radish = new Image(Assets.getAtlas().getTexture("radish"))
+				;
+				this.addChild(radish);
+				propsName = "radish";
 			}
 		}
 		
