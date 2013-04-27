@@ -407,6 +407,10 @@ package screens
 			disposeTemporarily();
 			puEnergy.ratio = 1.0;
 			
+						blackBg.visible = false;
+			continueButton.visible = false;
+			restartButton.visible = false;
+			exitButton.visible = false;
 			this.visible = true;
 		
 		}
