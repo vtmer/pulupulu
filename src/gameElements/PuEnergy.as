@@ -38,6 +38,8 @@ package gameElements
 			this.addChild(puEnergyArt1);
 			
 			puEnergyArt2 = new Image(Assets.getAtlas().getTexture("puEnergy2"));
+			puEnergyArt2.pivotY = puEnergyArt2.height;
+			puEnergyArt2.y=puEnergyArt2.height;
 			this.addChild(puEnergyArt2);
 		
 		}
@@ -47,7 +49,7 @@ package gameElements
 			puEnergyArt2.scaleY = mRatio;
 			//修正让缩放时对齐底部
 			//puEnergyArt2.y= puEnergyArt2.height * xRatio*2;
-			puEnergyArt2.y = puEnergyArt2.height / puEnergyArt2.scaleY * xRatio;
+			//puEnergyArt2.y = puEnergyArt2.height / puEnergyArt2.scaleY * xRatio;
 			puEnergyArt2.setTexCoords(0, new Point(0.0, xRatio));
 			puEnergyArt2.setTexCoords(1, new Point(1.0, xRatio));
 		

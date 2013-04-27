@@ -65,7 +65,7 @@ package screens
 		private var p1:Point;
 		private var p2:Point;
 		private var distance:Number;
-		private var myAcc:Accelerometer=new Accelerometer();
+		private var myAcc:Accelerometer = new Accelerometer();
 		
 		public function InGame()
 		{
@@ -106,7 +106,7 @@ package screens
 			
 			puman = new Puman();
 			puman.x = 350;
-			puman.y = 1150;
+			puman.y = 1290;
 			puman.name = "puman";
 			this.addChild(puman);
 			trace("Puman");
@@ -116,11 +116,10 @@ package screens
 			puEnergy.y = 85;
 			this.addChild(puEnergy);
 			
-			tips = new TextField(500, 500, "Touch to play!", "Verdana", 50);
-			tips.x = 100;
-			tips.y = 400;
+			tips = new TextField(640, 1280, "Touch to play!", "Verdana", 50);
+			tips.x = 50;
 			this.addChild(tips);
-			stage.addEventListener(TouchEvent.TOUCH, onTouchTips);
+			tips.addEventListener(TouchEvent.TOUCH, onTouchTips);
 			
 			pauseButton = new Button(Assets.getAtlas().getTexture("pauseBtn"));
 			pauseButton.x = 561;
@@ -139,8 +138,9 @@ package screens
 		{
 			if (phase == "ended" && puEnergy.ratio > 0.1)
 			{
-				this.removeChild(tips);
+				tips.visible = false;
 				launchPuman();
+				tips.removeEventListener(TouchEvent.TOUCH, onTouchTips);
 			}
 		}
 		
@@ -181,6 +181,7 @@ package screens
 			vAcceleration = 0;
 			stage.removeEventListener(TouchEvent.TOUCH, onTouch);
 			myAcc.removeEventListener(AccelerometerEvent.UPDATE, onAccUpdate);
+			this.removeEventListener(Event.ENTER_FRAME, onGameState)
 			
 			blackBg.visible = true;
 			continueButton.visible = true;
@@ -194,7 +195,9 @@ package screens
 		//重新开始
 		private function onRestartButton(e:Event):void
 		{
+			
 			initialize();
+			
 			blackBg.visible = false;
 			continueButton.visible = false;
 			restartButton.visible = false;
@@ -224,6 +227,7 @@ package screens
 			xSpeed = pausexS;
 			stage.addEventListener(TouchEvent.TOUCH, onTouch);
 			myAcc.addEventListener(AccelerometerEvent.UPDATE, onAccUpdate);
+			this.addEventListener(Event.ENTER_FRAME, onGameState)
 			
 			trace("continue");
 			blackBg.visible = false;
@@ -250,7 +254,7 @@ package screens
 				case "idle": 
 					puman.y += vVelocity;
 					
-					if (puman.y > 1000)
+					if (puman.y > 1280)
 					{
 						//初始化puman
 						vVelocity = -upEnergy;
@@ -279,7 +283,6 @@ package screens
 							trace("hit");
 							props.visible = false;
 							puEnergy.ratio += 0.01;
-							
 						}
 						
 							//
@@ -315,7 +318,7 @@ package screens
 								props.y -= vVelocity;
 							}
 							
-							//分数增加
+							//分数增加e
 							liveScore += 10;
 								//theScore.text = liveScore.toString();
 						}
@@ -324,7 +327,7 @@ package screens
 					//道具重置复用
 					if (propsVect[0] != null)
 					{
-						for (var k:int = 0; k < propsNum; k++)
+						for (var k:int = 0; k < Math.floor(propsNum - liveScore / 3000); k++)
 						{
 							props = propsVect[k];
 							if (props.y > 1280)
@@ -344,8 +347,10 @@ package screens
 					
 					break;
 				case "over": 
-					score.x = 270;
+					score.x = 180;
 					score.y = 400;
+					score.scaleX = 2;
+					score.scaleY = 2;
 					myAcc.removeEventListener(AccelerometerEvent.UPDATE, onAccUpdate);
 					blackBg.visible = true;
 					restartButton.visible = true;
@@ -378,24 +383,32 @@ package screens
 		
 		public function initialize():void
 		{
-			disposeTemporarily();
-			
-			this.visible = true;
 			
 			//puman.x = -stage.stageWidth * 0.5;
 			//puman.y = -stage.stageHeight;
 			
 			//闲置			
-			puman.y = 1150;
+			puman.y = 1290;
 			puman.x = 360;
 			gameState = "idle";
 			vAcceleration = 0.5;
-			
+			score.x = 0;
+			score.y = 0;
+			score.scaleX = 1;
+			score.scaleY = 1;
 			liveScore = 0;
+			
 			accX = 0;
+			tips.visible = true;
+			tips.addEventListener(TouchEvent.TOUCH, onTouchTips);
 			
 			myAcc.addEventListener(AccelerometerEvent.UPDATE, onAccUpdate);
 			stage.addEventListener(TouchEvent.TOUCH, onTouch);
+			disposeTemporarily();
+			puEnergy.ratio = 1.0;
+			
+			this.visible = true;
+		
 		}
 		
 		public function disposeTemporarily():void
