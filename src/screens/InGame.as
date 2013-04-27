@@ -43,7 +43,6 @@ package screens
 		private var vAcceleration:Number = 0.5;
 		private var vVelocity:Number;
 		private var liveScore:Number;
-		private var myAcc = new Accelerometer();
 		private const middleScreen:Number = 640;
 		private var tips:TextField;
 		private var pausevV:Number;
@@ -66,10 +65,7 @@ package screens
 		private var p1:Point;
 		private var p2:Point;
 		private var distance:Number;
-		private var _object2:DisplayObject;
-		private var _object1:DisplayObject;
-		private var touchnum:Number=0;
-		private var runnum:Number=0;
+		private var myAcc:Accelerometer=new Accelerometer();
 		
 		public function InGame()
 		{
@@ -97,6 +93,17 @@ package screens
 			score.y = 0;
 			this.addChild(score);
 			
+			//添加道具
+			for (var i:int = 0; i < propsNum; i++)
+			{
+				gameProps = new GameProps();
+				gameProps.x = Math.random() * stage.stageWidth;
+				gameProps.y = 100 + (i * stage.stageHeight / (propsNum + 1) - 100);
+				
+				propsVect[i] = gameProps;
+				addChild(gameProps);
+			}
+			
 			puman = new Puman();
 			puman.x = 350;
 			puman.y = 1150;
@@ -113,7 +120,7 @@ package screens
 			tips.x = 100;
 			tips.y = 400;
 			this.addChild(tips);
-			tips.addEventListener(TouchEvent.TOUCH, onTouchTips);
+			stage.addEventListener(TouchEvent.TOUCH, onTouchTips);
 			
 			pauseButton = new Button(Assets.getAtlas().getTexture("pauseBtn"));
 			pauseButton.x = 561;
@@ -130,8 +137,11 @@ package screens
 		
 		private function onTouchTips(e:TouchEvent):void
 		{
-			this.removeChild(tips);
-			launchPuman();
+			if (phase == "ended" && puEnergy.ratio > 0.1)
+			{
+				this.removeChild(tips);
+				launchPuman();
+			}
 		}
 		
 		private function pauseView():void
@@ -142,12 +152,12 @@ package screens
 			
 			continueButton = new Button(Assets.getAtlas().getTexture("continueBtn2"));
 			continueButton.x = 125;
-			continueButton.y = 533;
+			continueButton.y = 275;
 			this.addChild(continueButton);
 			
 			restartButton = new Button(Assets.getAtlas().getTexture("restartBtn"));
 			restartButton.x = 125;
-			restartButton.y = 275;
+			restartButton.y = 533;
 			this.addChild(restartButton);
 			
 			exitButton = new Button(Assets.getAtlas().getTexture("exitBtn"));
@@ -268,6 +278,7 @@ package screens
 						{
 							trace("hit");
 							props.visible = false;
+							puEnergy.ratio += 0.01;
 							
 						}
 						
@@ -310,6 +321,7 @@ package screens
 						}
 					}
 					
+					//道具重置复用
 					if (propsVect[0] != null)
 					{
 						for (var k:int = 0; k < propsNum; k++)
@@ -324,8 +336,22 @@ package screens
 						}
 					}
 					
+					//死亡判定
+					if (puman.y > (1280 + puman.height))
+					{
+						gameState = "over";
+					}
+					
 					break;
 				case "over": 
+					score.x = 270;
+					score.y = 400;
+					myAcc.removeEventListener(AccelerometerEvent.UPDATE, onAccUpdate);
+					blackBg.visible = true;
+					restartButton.visible = true;
+					exitButton.visible = true;
+					exitButton.addEventListener(Event.TRIGGERED, onExitBtn);
+					restartButton.addEventListener(Event.TRIGGERED, onRestartButton);
 					break;
 			}
 		
@@ -340,7 +366,7 @@ package screens
 			
 			p1 = new Point(object1.x, object1.y);
 			p2 = new Point(object2.x, object2.y);
-		
+			
 			distance = Point.distance(p1, p2);
 			if (distance < (radius1 + radius2))
 			{
@@ -368,16 +394,6 @@ package screens
 			liveScore = 0;
 			accX = 0;
 			
-			for (var i:int = 0; i < propsNum; i++)
-			{
-				gameProps = new GameProps();
-				gameProps.x = Math.random() * stage.stageWidth;
-				gameProps.y = 100 + (i * stage.stageHeight / (propsNum + 1) - 100);
-				
-				propsVect[i] = gameProps;
-				addChild(gameProps);
-			}
-			
 			myAcc.addEventListener(AccelerometerEvent.UPDATE, onAccUpdate);
 			stage.addEventListener(TouchEvent.TOUCH, onTouch);
 		}
@@ -390,7 +406,7 @@ package screens
 		//重力控制
 		// MONITOR THE ACCELEROMETER
 		
-		function onAccUpdate(evt:AccelerometerEvent):void
+		private function onAccUpdate(evt:AccelerometerEvent):void
 		{
 			accX = -evt.accelerationX;
 			if (accX > 0)
@@ -417,28 +433,15 @@ package screens
 		{
 			var touch:Touch = e.getTouch(stage);
 			phase = touch.phase;
-			if (phase == "ended")
+			if (phase == "ended" && puEnergy.ratio > 0.1)
 			{
 				vVelocity = -upEnergy;
 				pu = new Pu();
 				pu.x = puman.x;
 				pu.y = puman.y + puman.height;
 				this.addChild(pu);
-				touchnum += 1;
-				puEnergy.addEventListener(Event.ENTER_FRAME, power);
+				puEnergy.ratio -= 0.1;
 			}
-		}
-		
-		private function power(e:Event):void
-		{
-			if (runnum < 0.2 * touchnum)
-			{
-				runnum += 0.01;
-				puEnergy.setratio(runnum);
-			}
-			else
-				puEnergy.removeEventListener(Event.ENTER_FRAME, power);
-		
 		}
 	
 	}

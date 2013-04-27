@@ -17,11 +17,12 @@ package gameElements
 		private var puEnergyArt1:Image;
 		private var puEnergyArt2:Image;
 		private var mRatio:Number;
+		private var xRatio:Number;
 		
 		public function PuEnergy()
 		{
 			super();
-			mRatio = 0.0;
+			mRatio = 1;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddToStage);
 		}
 		
@@ -36,27 +37,32 @@ package gameElements
 			puEnergyArt1 = new Image(Assets.getAtlas().getTexture("puEnergy1"));
 			this.addChild(puEnergyArt1);
 			
-			puEnergyArt2= new Image(Assets.getAtlas().getTexture("puEnergy2"));
+			puEnergyArt2 = new Image(Assets.getAtlas().getTexture("puEnergy2"));
 			this.addChild(puEnergyArt2);
-			
-			
+		
 		}
 		
-		
 		private function update():void
-        {   /*if(puEnergyArt.scaleY>0.8)
-		    puEnergyArt.scaleY -= mRatio*0.2;*/
-            puEnergyArt2.scaleY = mRatio;
-            puEnergyArt2. setTexCoords ( 2 ,  new  Point ( 0.0,mRatio));
-            puEnergyArt2. setTexCoords ( 3 ,  new  Point ( 1.0,mRatio));
-            
-        }
-		//public function get ratio(){ return mRatio; }
-         public function setratio(value:Number):void 
-        { mRatio=1.0-value;
-		  if(mRatio>0)
-          update();
-		  
+		{
+			puEnergyArt2.scaleY = mRatio;
+			//修正让缩放时对齐底部
+			//puEnergyArt2.y= puEnergyArt2.height * xRatio*2;
+			puEnergyArt2.y = puEnergyArt2.height / puEnergyArt2.scaleY * xRatio;
+			puEnergyArt2.setTexCoords(0, new Point(0.0, xRatio));
+			puEnergyArt2.setTexCoords(1, new Point(1.0, xRatio));
+		
+		}
+		
+		public function get ratio():Number
+		{
+			return mRatio;
+		}
+		
+		public function set ratio(value:Number):void
+		{
+			mRatio = Math.max(0.0, Math.min(1.0, value));
+			xRatio = -mRatio + 1.0;
+			update();
 		}
 	
 	}
