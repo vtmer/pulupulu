@@ -26,12 +26,14 @@ package
 			//自适应屏幕分辨率
 			var screenWidth:int = stage.fullScreenWidth;
 			var screenHeight:int = stage.fullScreenHeight;
+			//pc
+			//var screenWidth:int =360;
+			//var screenHeight:int = 600;
 			var viewPort:Rectangle = new Rectangle(0, 0, screenWidth, screenHeight)
 			
 			_st = new Starling(Game, stage, viewPort);
 			_st.stage.stageWidth = 720;
 			_st.stage.stageHeight = 1280;
-			
 			
 			_st.simulateMultitouch = false;
 			_st.antiAliasing = 1;

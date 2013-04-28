@@ -16,6 +16,7 @@ package screens
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -66,6 +67,9 @@ package screens
 		private var p2:Point;
 		private var distance:Number;
 		private var myAcc:Accelerometer = new Accelerometer();
+		private var spX:Number = 0;
+		private var spXAdd:Number = 1.5;
+		private var friction:Number =0.5;
 		
 		public function InGame()
 		{
@@ -247,6 +251,40 @@ package screens
 		private function onGameState(e:Event):void
 		{
 			score.text = String(liveScore);
+			xSpeed += spX;
+			//限定移动速度
+			if (xSpeed > 10)
+			{
+				xSpeed = 10;
+			}
+			if (xSpeed < -10)
+			{
+				xSpeed = -10;
+			}
+			//计算磨擦力
+			if (spX < 0)
+			{
+				if (spX + friction > 0)
+				{
+					spX = 0;
+				}
+				else
+				{
+					spX += friction;
+				}
+			}
+			else if (spX > 0)
+			{
+				if (spX - friction < 0)
+				{
+					spX = 0;
+				}
+				else
+				{
+					spX -= friction;
+				}
+			}
+			
 			//游戏状态
 			switch (gameState)
 			{
@@ -327,7 +365,7 @@ package screens
 					//道具重置复用
 					if (propsVect[0] != null)
 					{
-						for (var k:int = 0; k < Math.floor(propsNum - liveScore / 3000); k++)
+						for (var k:int = 0; k < Math.max(5, Math.floor(propsNum - liveScore / 4000)); k++)
 						{
 							props = propsVect[k];
 							if (props.y > 1280)
@@ -398,16 +436,23 @@ package screens
 			score.scaleY = 1;
 			liveScore = 0;
 			
+			for (var k:int = 0; k < propsNum; k++)
+			{
+				props = propsVect[k];
+				props.y = 100 + (k * stage.stageHeight / (propsNum + 1) - 100);
+			}
+			
 			accX = 0;
 			tips.visible = true;
 			tips.addEventListener(TouchEvent.TOUCH, onTouchTips);
 			
 			myAcc.addEventListener(AccelerometerEvent.UPDATE, onAccUpdate);
 			stage.addEventListener(TouchEvent.TOUCH, onTouch);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeybroad);
 			disposeTemporarily();
 			puEnergy.ratio = 1.0;
 			
-						blackBg.visible = false;
+			blackBg.visible = false;
 			continueButton.visible = false;
 			restartButton.visible = false;
 			exitButton.visible = false;
@@ -458,6 +503,58 @@ package screens
 				pu.y = puman.y + puman.height;
 				this.addChild(pu);
 				puEnergy.ratio -= 0.1;
+			}
+		}
+		
+		//键盘控制
+		
+		private function onKeybroad(e:KeyboardEvent):void
+		{
+			
+			if (spX > 0)
+			{
+				if (e.keyCode == 65)
+				{
+					spX = 0; //右刹车
+				}
+				else if (e.keyCode == 68)
+				{
+					spX += spXAdd;
+				}
+				else
+				{
+					
+				}
+			}
+			else if (spX < 0)
+			{
+				if (e.keyCode == 68)
+				{
+					spX = 0;
+				}
+				else if (e.keyCode == 65)
+				{
+					spX -= spXAdd;
+				}
+				else
+				{
+					
+				}
+			}
+			else
+			{
+				if (e.keyCode == 68)
+				{
+					spX += spXAdd;
+				}
+				else if (e.keyCode == 65)
+				{
+					spX -= spXAdd;
+				}
+				else
+				{
+					
+				}
 			}
 		}
 	
